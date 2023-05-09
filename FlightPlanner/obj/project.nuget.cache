@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "MaVsQNXGyBVCoEjGwtSN4c3+ZvUF2r04/Sgg03CbRgI+1HXXGrU6dw4FekZ82u94JBSdZDIdw96Be7jdF2wX1A==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Administrator.DESKTOP-QEAQSC9\\Source\\Repos\\flight-planner\\FlightPlanner\\FlightPlanner.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Administrator.DESKTOP-QEAQSC9\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\Administrator.DESKTOP-QEAQSC9\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\Administrator.DESKTOP-QEAQSC9\\.nuget\\packages\\swashbuckle.aspnetcore\\5.6.3\\swashbuckle.aspnetcore.5.6.3.nupkg.sha512",
+    "C:\\Users\\Administrator.DESKTOP-QEAQSC9\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\5.6.3\\swashbuckle.aspnetcore.swagger.5.6.3.nupkg.sha512",
+    "C:\\Users\\Administrator.DESKTOP-QEAQSC9\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\5.6.3\\swashbuckle.aspnetcore.swaggergen.5.6.3.nupkg.sha512",
+    "C:\\Users\\Administrator.DESKTOP-QEAQSC9\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\5.6.3\\swashbuckle.aspnetcore.swaggerui.5.6.3.nupkg.sha512"
+  ],
+  "logs": []
+}
