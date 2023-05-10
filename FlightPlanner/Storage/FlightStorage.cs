@@ -40,13 +40,21 @@ namespace FlightPlanner.Storage
             return removeById;
         }
 
-        public static Airport[] SearchAirports(string search)
+        public static List<Airport> GetAirports()
         {
-            var filteredAirports = _flights.Where(flight =>
-                flight.From.AirportCode.Equals(search)
-            ).Select(flight => flight.From).ToList();
+            var listAirports = new List<Airport>();
+            
+            foreach (var flight in _flights)
+            {
+                    listAirports.Add(new Airport()
+                    {
+                        AirportCode = flight.From.AirportCode,
+                        City = flight.From.City,
+                        Country = flight.From.Country,
+                    });
+            }
 
-            return filteredAirports.ToArray();
+            return listAirports;
         }
 
 
