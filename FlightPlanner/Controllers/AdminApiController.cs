@@ -29,56 +29,52 @@ namespace FlightPlanner.Controllers
 
         [HttpPut]
         [Route("flights")]
-        public IActionResult AddFlight(Flight flight)
+        public IActionResult AddFlight([FromBody] Flight flight)
         {
             var listOfFlights = FlightStorage.GetAllFlights();
+            var flightsCopy = listOfFlights.ToList();
 
-            if (listOfFlights.Any(f => f.ArrivalTime == flight.ArrivalTime &&
-                                        f.DepartureTime == flight.DepartureTime &&
-                                        f.Carrier == flight.Carrier))
-            {
-                return Conflict(flight);
-            }
-            else if (flight == null ||
-                     string.IsNullOrEmpty(flight.ArrivalTime) ||
-                     string.IsNullOrEmpty(flight.DepartureTime) ||
-                     string.IsNullOrEmpty(flight.Carrier) ||
-                     flight.To is null ||
-                     string.IsNullOrEmpty(flight.To.Country) ||
-                     string.IsNullOrEmpty(flight.To.City) ||
-                     string.IsNullOrEmpty(flight.To.AirportCode) ||
-                     flight.From is null ||
-                     string.IsNullOrEmpty(flight.From.Country) ||
-                     string.IsNullOrEmpty(flight.From.City) ||
-                     string.IsNullOrEmpty(flight.From.AirportCode) ||
-                     string.Equals(flight.To.Country, flight.From.Country, StringComparison.OrdinalIgnoreCase) ||
-                     string.Equals(flight.To.City, flight.From.City, StringComparison.OrdinalIgnoreCase) ||
-                     string.Equals(flight.To.AirportCode, flight.From.AirportCode, StringComparison.OrdinalIgnoreCase) ||
-                     DateTime.Parse(flight.ArrivalTime) < DateTime.Parse(flight.DepartureTime) ||
-                     DateTime.Parse(flight.ArrivalTime) == DateTime.Parse(flight.DepartureTime)
-                     )
+            if (!FlightStorage.IsValidFlight(flight))
             {
                 return BadRequest(flight);
             }
-            else
-            {
-                FlightStorage.AddFlight(flight);
 
-                return Created("", flight);
+            if (flightsCopy.Any(f => f.From.Country.Equals(flight.From.Country) &&
+                                     f.To.Country.Equals(flight.To.Country) &&
+                                     f.From.AirportCode.Equals(flight.From.AirportCode) &&
+                                     f.To.AirportCode.Equals(flight.To.AirportCode) &&
+                                     f.From.City.Equals(flight.From.City) &&
+                                     f.To.City.Equals(flight.To.City) &&
+                                     f.ArrivalTime.Equals(flight.ArrivalTime) &&
+                                     f.DepartureTime.Equals(flight.DepartureTime) &&
+                                     f.Carrier.Equals(flight.Carrier)))
+            {
+                return Conflict(flight);
             }
+
+            FlightStorage.AddFlight(flight);
+
+            return Created("", flight);
         }
+
 
         [HttpDelete]
         [Route("flights/{id}")]
         public IActionResult DeleteFlight(int id)
         {
-            var flight = FlightStorage.DeleteFlight(id);
-             if (flight is null) 
+            var flight = new Flight();
+            var list = FlightStorage.GetAllFlights();
+            var getFlight = FlightStorage.GetFlight(id);
+
+            if(list.Contains(getFlight)) 
             {
-                return Ok();
+                flight = FlightStorage.DeleteFlight(id);
+
+                return Ok(flight);
             }
 
-            return Ok(flight);
+            return Ok();
+            
         }
     }
 }
