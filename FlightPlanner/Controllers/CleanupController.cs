@@ -8,13 +8,19 @@ namespace FlightPlanner.Controllers
 {
     [Route("testing-api")]
     [ApiController]
-    public class CleanupController : ControllerBase
+    public class CleanupController : BaseApiController
     {
+        public CleanupController(FlightPlannerDbContext context) : base(context) { }
+
         [HttpPost]
         [Route("clear")]
         public IActionResult Clear() 
         {
-            return Ok(FlightStorage.FlightsClear());
+            _context.Flights.RemoveRange(_context.Flights);
+            _context.Airports.RemoveRange(_context.Airports);
+            _context.SaveChanges();
+
+            return Ok();
         }
     }
 }

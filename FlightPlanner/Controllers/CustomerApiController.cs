@@ -3,6 +3,7 @@ using FlightPlanner.Storage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,10 +15,10 @@ namespace FlightPlanner.Controllers
 {
     [Route("api")]
     [ApiController]
-  
 
-    public class CustomerApiController : ControllerBase
+    public class CustomerApiController : BaseApiController
     {
+        public CustomerApiController(FlightPlannerDbContext context) : base(context) { }
 
         [HttpGet]
         [Route("airports")]
@@ -28,51 +29,60 @@ namespace FlightPlanner.Controllers
                 return NotFound();
             }
 
-            var airports = FlightStorage.GetAirports();
-            var listAirports = new List<Airport>();
-
             search = search.Trim().ToUpper();
 
-            foreach (var airport in airports)
+            var allAirports = _context.Airports;
+            var searchedList = new List<Airport>();
+
+            foreach (var airport in allAirports)
             {
                 if (airport.AirportCode.ToUpper().Contains(search) ||
                     airport.City.ToUpper().Contains(search) ||
                     airport.Country.ToUpper().Contains(search))
                 {
-                    listAirports.Add(airport);
+                    searchedList.Add(airport);
                 }
             }
-            var returnArray = listAirports.Distinct().ToArray();
+            searchedList.Distinct().ToArray();
 
-            if (returnArray is null)
+            if (searchedList is null)
             {
                 return NotFound();
             }
-            return Ok(returnArray);
+
+
+            return Ok(searchedList);
         }
 
         [HttpPost]
         [Route("flights/search")]
 
-        public IActionResult SearchFlights([FromBody] SearchFlightsRequest request)
+        public IActionResult SearchFlights(SearchFlightsRequest request)
         {
-            var matchingList = FlightStorage.AddSearchedFlight(request);
-
-            var page = new PageResult<Flight>()
-            {
-                Page = matchingList.Length,
-                TotalItems = matchingList.Length,
-                Items = matchingList
-            };
-
-            if (request.To != null && request.From != null && !string.IsNullOrEmpty(request.DepartureDate))
-            {
-                return Ok(page);
-            }
-
             if (request.To == null || request.From == null || string.IsNullOrEmpty(request.DepartureDate))
             {
                 return BadRequest();
+            }
+
+        var matchingList = _context.Flights.Where(item =>
+        item.From.City == request.From.City &&
+        item.From.AirportCode == request.From.AirportCode &&
+        item.From.Country == request.From.Country &&
+        item.To.City == request.To.City &&
+        item.To.Country == request.To.Country &&
+        item.To.AirportCode == request.To.AirportCode)
+            .ToList();
+
+            var page = new PageResult()
+            {
+                Page = matchingList.Count(),
+                TotalItems = matchingList.Count(),
+                Items = matchingList.ToArray()
+            };
+
+            if (request.To.AirportCode != null && request.From.AirportCode != null && !string.IsNullOrEmpty(request.DepartureDate))
+            {
+                return Ok(page);
             }
 
             return Ok();
@@ -81,10 +91,10 @@ namespace FlightPlanner.Controllers
 
         [HttpGet]
         [Route("flights/{id}")]
-        
+
         public IActionResult FindFlights(int id)
         {
-            var flight = FlightStorage.GetFlight(id);
+            var flight = _context.Flights.Include(f => f.From).Include(f => f.To).SingleOrDefault(f => f.Id == id);
             if (flight == null)
             {
                 return NotFound();

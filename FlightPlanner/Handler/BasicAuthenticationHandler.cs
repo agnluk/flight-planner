@@ -18,16 +18,17 @@ namespace FlightPlanner.Handler
         {
         }
 
-        protected override Task<AuthenticateResult> HandleAuthenticateAsync()
+        protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
             var endpoint = Context.GetEndpoint();
             if (endpoint?.Metadata.GetMetadata<IAllowAnonymous>() != null)
             {
-                return Task.FromResult(AuthenticateResult.NoResult());
+                return AuthenticateResult.NoResult();
             }
+
             if (!Request.Headers.ContainsKey("Authorization"))
             {
-                return Task.FromResult(AuthenticateResult.Fail("Missing Authorization Header"));
+                return AuthenticateResult.Fail("Missing Authorization Header");
             }
 
             bool authorized;
@@ -35,18 +36,19 @@ namespace FlightPlanner.Handler
             {
                 var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
                 var credentialBytes = Convert.FromBase64String(authHeader.Parameter);
-                var credentials = Encoding.UTF8.GetString(credentialBytes).Split(new[] { ':' });
+                var credentials = Encoding.UTF8.GetString(credentialBytes).Split(new[] { ':' }, 2);
                 var username = credentials[0];
                 var password = credentials[1];
-                authorized = username == "codelex-admin" && password == "Password123";
+                authorized = await ValidateCredentialsAsync(username, password);
             }
             catch
             {
-                return Task.FromResult(AuthenticateResult.Fail("Invalid Authorization Header"));
+                return AuthenticateResult.Fail("Invalid Authorization Header");
             }
+
             if (!authorized)
             {
-                return Task.FromResult(AuthenticateResult.Fail("Invalid Username or Password"));
+                return AuthenticateResult.Fail("Invalid Username or Password");
             }
 
             var claims = new[] { new Claim(ClaimTypes.Name, "user") };
@@ -54,7 +56,16 @@ namespace FlightPlanner.Handler
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, Scheme.Name);
 
-            return Task.FromResult(AuthenticateResult.Success(ticket));
+            return AuthenticateResult.Success(ticket);
+        }
+
+        private Task<bool> ValidateCredentialsAsync(string username, string password)
+        {
+            var validUsername = "codelex-admin";
+            var validPassword = "Password123";
+            var isValid = username == validUsername && password == validPassword;
+
+            return Task.FromResult(isValid);
         }
     }
 }

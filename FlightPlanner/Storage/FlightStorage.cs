@@ -1,4 +1,5 @@
 ﻿using FlightPlanner.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +10,13 @@ namespace FlightPlanner.Storage
     public static class FlightStorage
     {
         private static List<Flight> _flights = new List<Flight>();
-        private static List<PageResult<Flight>> _pageResultFlights = new List<PageResult<Flight>>();
+        private static List<PageResult> _pageResultFlights = new List<PageResult>();
         private static int _id = 1;
-        private static int _page = 1;
 
         public static Flight GetFlight(int id)
         {
-            var flight = _flights.FirstOrDefault(f => f.Id == id);
-            return flight;
+            return new Flight();
+          
         }
 
         public static List<Flight> FlightsClear()
@@ -67,18 +67,6 @@ namespace FlightPlanner.Storage
             return distinctAirports;
         }
 
-        public static Flight[] AddSearchedFlight(SearchFlightsRequest search)
-        {
-            var matchingFlights = _flights
-    .Where(item => item.From == search.From && item.To == search.To && item.DepartureTime == search.DepartureDate)
-    .Distinct()
-    .ToList();
-
-            
-            var returnList = matchingFlights.ToArray();
-
-            return returnList;
-        }
         public static bool IsValidFlight(Flight flight)
         {
             return flight != null &&
