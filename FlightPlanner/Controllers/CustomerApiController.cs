@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
@@ -18,6 +19,7 @@ namespace FlightPlanner.Controllers
 
     public class CustomerApiController : BaseApiController
     {
+        private readonly object _locker = new object();
         public CustomerApiController(FlightPlannerDbContext context) : base(context) { }
 
         [HttpGet]
@@ -53,41 +55,45 @@ namespace FlightPlanner.Controllers
 
             return Ok(searchedList);
         }
-
         [HttpPost]
         [Route("flights/search")]
-
         public IActionResult SearchFlights(SearchFlightsRequest request)
         {
-            if (request.To == null || request.From == null || string.IsNullOrEmpty(request.DepartureDate))
-            {
-                return BadRequest();
-            }
+            var matchingList = _context.Flights;
+            var page = new PageResult();
 
-        var matchingList = _context.Flights.Where(item =>
-        item.From.City == request.From.City &&
-        item.From.AirportCode == request.From.AirportCode &&
-        item.From.Country == request.From.Country &&
-        item.To.City == request.To.City &&
-        item.To.Country == request.To.Country &&
-        item.To.AirportCode == request.To.AirportCode)
-            .ToList();
+                if (request.From == null
+                    || request.To == null
+                    || request.DepartureDate == null
+                    || request.To == request.From)
+                {
+                    return BadRequest();
+                }
+                var uniqueItem = matchingList.Select(item =>
+                                               item.From.AirportCode == request.From &&
+                                               item.To.AirportCode == request.To &&
+                                               item.DepartureTime == request.DepartureDate).Distinct();
 
-            var page = new PageResult()
-            {
-                Page = matchingList.Count(),
-                TotalItems = matchingList.Count(),
-                Items = matchingList.ToArray()
-            };
+                var items = matchingList.Where(item =>
+                                              item.From.AirportCode == request.From &&
+                                              item.To.AirportCode == request.To &&
+                                              item.DepartureTime == request.DepartureDate).Distinct();
+                page = new PageResult()
+                {
+                    Page = matchingList.Count(),
+                    TotalItems = uniqueItem.Count(),
+                    Items = items.ToArray(),
+                };
 
-            if (request.To.AirportCode != null && request.From.AirportCode != null && !string.IsNullOrEmpty(request.DepartureDate))
-            {
-                return Ok(page);
-            }
 
-            return Ok();
+                if (request.To != null && request.From != null && !string.IsNullOrEmpty(request.DepartureDate))
+                {
+                    return Ok(page);
+                }
+
+                return NoContent();
         }
-
+        
 
         [HttpGet]
         [Route("flights/{id}")]
@@ -104,5 +110,3 @@ namespace FlightPlanner.Controllers
         }
     }
 }
-
-

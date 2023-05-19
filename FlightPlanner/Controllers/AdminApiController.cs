@@ -37,27 +37,25 @@ namespace FlightPlanner.Controllers
         [Route("flights")]
         public IActionResult AddFlight([FromBody] Flight flight)
         {
-            lock (_locker)
+            if (flight == null ||
+                string.IsNullOrWhiteSpace(flight.ArrivalTime) ||
+                string.IsNullOrWhiteSpace(flight.DepartureTime) ||
+                string.IsNullOrWhiteSpace(flight.Carrier) ||
+                flight.To == null ||
+                string.IsNullOrWhiteSpace(flight.To.Country) ||
+                string.IsNullOrWhiteSpace(flight.To.City) ||
+                string.IsNullOrWhiteSpace(flight.To.AirportCode) ||
+                flight.From == null ||
+                string.IsNullOrWhiteSpace(flight.From.Country) ||
+                string.IsNullOrWhiteSpace(flight.From.City) ||
+                string.IsNullOrWhiteSpace(flight.From.AirportCode) ||
+                DateTime.Parse(flight.ArrivalTime) <= DateTime.Parse(flight.DepartureTime) ||
+                string.Equals(flight.To.City, flight.From.City, StringComparison.CurrentCultureIgnoreCase) ||
+                string.Equals(flight.To.AirportCode, flight.From.AirportCode, StringComparison.CurrentCultureIgnoreCase))
             {
-                if (flight == null &&
-                    string.IsNullOrWhiteSpace(flight.ArrivalTime) &&
-                    string.IsNullOrWhiteSpace(flight.DepartureTime) &&
-                    string.IsNullOrWhiteSpace(flight.Carrier) &&
-                    flight.To == null &&
-                    string.IsNullOrWhiteSpace(flight.To.Country) &&
-                    string.IsNullOrWhiteSpace(flight.To.City) &&
-                    string.IsNullOrWhiteSpace(flight.To.AirportCode) &&
-                    flight.From == null &&
-                    string.IsNullOrWhiteSpace(flight.From.Country) &&
-                    string.IsNullOrWhiteSpace(flight.From.City) &&
-                    string.IsNullOrWhiteSpace(flight.From.AirportCode) &&
-                    DateTime.Parse(flight.ArrivalTime) <= DateTime.Parse(flight.DepartureTime) &&
-                    string.Equals(flight.To.Country, flight.From.Country, StringComparison.CurrentCultureIgnoreCase) &&
-                    string.Equals(flight.To.City, flight.From.City, StringComparison.CurrentCultureIgnoreCase) &&
-                    string.Equals(flight.To.AirportCode, flight.From.AirportCode, StringComparison.CurrentCultureIgnoreCase))
-                {
-                    return BadRequest(flight);
-                }
+                return BadRequest(flight);
+            }
+            else { }
 
                 if (_context.Flights.Any(f => f.From.Country.Equals(flight.From.Country) &&
                                          f.To.Country.Equals(flight.To.Country) &&
@@ -74,10 +72,10 @@ namespace FlightPlanner.Controllers
 
                 _context.Flights.Add(flight);
                 _context.SaveChanges();
-            }
-
+            
             return Created("", flight);
         }
+
 
 
         [HttpDelete]

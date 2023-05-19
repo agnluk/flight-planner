@@ -5,8 +5,8 @@ namespace FlightPlanner.Models
 {
     public class SearchFlightsRequest
     {
-        public Airport From { get; set; }
-        public Airport To { get; set; }
+        public string From { get; set; }
+        public string To { get; set; }
         public string DepartureDate { get; set; }
     }
 }

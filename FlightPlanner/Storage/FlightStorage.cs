@@ -9,62 +9,13 @@ namespace FlightPlanner.Storage
 {
     public static class FlightStorage
     {
-        private static List<Flight> _flights = new List<Flight>();
         private static List<PageResult> _pageResultFlights = new List<PageResult>();
         private static int _id = 1;
 
-        public static Flight GetFlight(int id)
+
+        public static List<PageResult> GetAllFlights()
         {
-            return new Flight();
-          
-        }
-
-        public static List<Flight> FlightsClear()
-        {
-            _flights.Clear();
-            _id = 1;
-            return _flights;
-        }
-
-        public static Flight AddFlight(Flight addFlight)
-        {
-                addFlight.Id = _id++;
-                _flights.Add(addFlight);
-
-            return addFlight;
-        }
-
-        public static List<Flight> GetAllFlights()
-        {
-            return _flights;
-        }
-
-        public static Flight DeleteFlight(int removeFlight)
-        {
-
-            var removeById = GetFlight(removeFlight);
-            _flights.Remove(removeById);
-            return removeById;
-        }
-
-        public static List<Airport> GetAirports()
-        {
-            var listAirports = new List<Airport>();
-
-
-            foreach (var flight in _flights)
-            {
-                listAirports.Add(new Airport()
-                {
-                    AirportCode = flight.From.AirportCode,
-                    City = flight.From.City,
-                    Country = flight.From.Country,
-                });
-            }
-
-            var distinctAirports = listAirports.Distinct().ToList();
-
-            return distinctAirports;
+            return _pageResultFlights;
         }
 
         public static bool IsValidFlight(Flight flight)
