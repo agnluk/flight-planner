@@ -2,8 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\FlightPlanner",
-    "\\FlightPlanner\\Controllers"
+    "\\FlightPlanner.Data"
   ],
-  "SelectedNode": "\\FlightPlanner\\Controllers\\CustomerApiController.cs",
+  "SelectedNode": "\\FlightPlanner.sln",
   "PreviewInSolutionExplorer": false
 }
