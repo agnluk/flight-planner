@@ -1,10 +1,7 @@
 ﻿using FlightPlanner.Models;
 using FlightPlanner.Storage;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace FlightPlanner.Controllers
@@ -18,10 +15,10 @@ namespace FlightPlanner.Controllers
 
         [HttpGet]
         [Route("flights/{id}")]
-
         public IActionResult GetFlights(int id)
         {
             var flight = FlightStorage.GetFlight(id);
+
             if (flight == null)
             {
                 return NotFound();
@@ -58,26 +55,23 @@ namespace FlightPlanner.Controllers
                     return Conflict(flight);
                 }
 
+
                 FlightStorage.AddFlight(flight);
             }
 
             return Created("", flight);
         }
 
-
-
         [HttpDelete]
         [Route("flights/{id}")]
         public IActionResult DeleteFlight(int id)
         {
             var listOfFlights = FlightStorage.GetAllFlights().ToList();
-
             var flightToRemove = listOfFlights.FirstOrDefault(f => f.Id == id);
 
             if (flightToRemove != null)
             {
                 listOfFlights.Remove(flightToRemove);
-
                 FlightStorage.UpdateFlights(listOfFlights);
 
                 return Ok(flightToRemove);
@@ -85,10 +79,5 @@ namespace FlightPlanner.Controllers
 
             return Ok();
         }
-
-
-
-
-
     }
 }

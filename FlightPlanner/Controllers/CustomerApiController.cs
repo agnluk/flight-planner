@@ -10,11 +10,8 @@ namespace FlightPlanner.Controllers
 {
     [Route("api")]
     [ApiController]
-  
-
     public class CustomerApiController : ControllerBase
     {
-
         [HttpGet]
         [Route("airports")]
         public IActionResult SearchAirports(string search)
@@ -26,7 +23,6 @@ namespace FlightPlanner.Controllers
 
             var airports = FlightStorage.GetAirports();
             var listAirports = new List<Airport>();
-
             search = search.Trim().ToUpper();
 
             foreach (var airport in airports)
@@ -38,12 +34,14 @@ namespace FlightPlanner.Controllers
                     listAirports.Add(airport);
                 }
             }
+
             var returnArray = listAirports.Distinct().ToArray();
 
             if (returnArray is null)
             {
                 return NotFound();
             }
+
             return Ok(returnArray);
         }
 
@@ -61,6 +59,7 @@ namespace FlightPlanner.Controllers
             {
                 return BadRequest();
             }
+
             var uniqueItem = matchingList.Select(item =>
                                            item.From.AirportCode == request.From &&
                                            item.To.AirportCode == request.To &&
@@ -77,7 +76,6 @@ namespace FlightPlanner.Controllers
                 Items = items.ToArray(),
             };
 
-
             if (request.To != null && request.From != null && !string.IsNullOrEmpty(request.DepartureDate))
             {
                 return Ok(page);
@@ -86,13 +84,12 @@ namespace FlightPlanner.Controllers
             return NoContent();
         }
 
-
         [HttpGet]
         [Route("flights/{id}")]
-        
         public IActionResult FindFlights(int id)
         {
             var flight = FlightStorage.GetFlight(id);
+
             if (flight == null)
             {
                 return NotFound();
@@ -102,5 +99,3 @@ namespace FlightPlanner.Controllers
         }
     }
 }
-
-
