@@ -1,4 +1,5 @@
 ﻿using FlightPlanner.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,8 @@ namespace FlightPlanner.Storage
     public static class FlightStorage
     {
         private static List<Flight> _flights = new List<Flight>();
-        private static List<PageResult<Flight>> _pageResultFlights = new List<PageResult<Flight>>();
+        private static List<PageResult> _pageResultFlights = new List<PageResult>();
         private static int _id = 1;
-        private static int _page = 1;
 
         public static Flight GetFlight(int id)
         {
@@ -26,10 +26,15 @@ namespace FlightPlanner.Storage
             return _flights;
         }
 
+        public static void UpdateFlights(List<Flight> flights)
+        {
+            _flights = flights;
+        }
+
         public static Flight AddFlight(Flight addFlight)
         {
-                addFlight.Id = _id++;
-                _flights.Add(addFlight);
+            addFlight.Id = _id++;
+            _flights.Add(addFlight);
 
             return addFlight;
         }
@@ -67,36 +72,24 @@ namespace FlightPlanner.Storage
             return distinctAirports;
         }
 
-        public static Flight[] AddSearchedFlight(SearchFlightsRequest search)
-        {
-            var matchingFlights = _flights
-    .Where(item => item.From == search.From && item.To == search.To && item.DepartureTime == search.DepartureDate)
-    .Distinct()
-    .ToList();
-
-            
-            var returnList = matchingFlights.ToArray();
-
-            return returnList;
-        }
+       
         public static bool IsValidFlight(Flight flight)
         {
-            return flight != null &&
-                !string.IsNullOrWhiteSpace(flight.ArrivalTime) &&
-                !string.IsNullOrWhiteSpace(flight.DepartureTime) &&
-                !string.IsNullOrWhiteSpace(flight.Carrier) &&
-                flight.To != null &&
-                !string.IsNullOrWhiteSpace(flight.To.Country) &&
-                !string.IsNullOrWhiteSpace(flight.To.City) &&
-                !string.IsNullOrWhiteSpace(flight.To.AirportCode) &&
-                flight.From != null &&
-                !string.IsNullOrWhiteSpace(flight.From.Country) &&
-                !string.IsNullOrWhiteSpace(flight.From.City) &&
-                !string.IsNullOrWhiteSpace(flight.From.AirportCode) &&
-                DateTime.Parse(flight.ArrivalTime) > DateTime.Parse(flight.DepartureTime) &&
-                !string.Equals(flight.To.Country, flight.From.Country, StringComparison.CurrentCultureIgnoreCase) &&
-                !string.Equals(flight.To.City, flight.From.City, StringComparison.CurrentCultureIgnoreCase) &&
-                !string.Equals(flight.To.AirportCode, flight.From.AirportCode, StringComparison.CurrentCultureIgnoreCase);
+            return flight == null ||
+                string.IsNullOrWhiteSpace(flight.ArrivalTime) ||
+                string.IsNullOrWhiteSpace(flight.DepartureTime) ||
+                string.IsNullOrWhiteSpace(flight.Carrier) ||
+                flight.To == null ||
+                string.IsNullOrWhiteSpace(flight.To.Country) ||
+                string.IsNullOrWhiteSpace(flight.To.City) ||
+                string.IsNullOrWhiteSpace(flight.To.AirportCode) ||
+                flight.From == null ||
+                string.IsNullOrWhiteSpace(flight.From.Country) ||
+                string.IsNullOrWhiteSpace(flight.From.City) ||
+                string.IsNullOrWhiteSpace(flight.From.AirportCode) ||
+                DateTime.Parse(flight.ArrivalTime) <= DateTime.Parse(flight.DepartureTime) ||
+                string.Equals(flight.To.City, flight.From.City, StringComparison.CurrentCultureIgnoreCase) ||
+                string.Equals(flight.To.AirportCode, flight.From.AirportCode, StringComparison.CurrentCultureIgnoreCase);
         }
     }
 }

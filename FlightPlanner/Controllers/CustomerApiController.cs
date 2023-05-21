@@ -1,14 +1,10 @@
 ﻿using FlightPlanner.Models;
 using FlightPlanner.Storage;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
+using PageResult = FlightPlanner.Models.PageResult;
 
 namespace FlightPlanner.Controllers
 {
@@ -53,29 +49,41 @@ namespace FlightPlanner.Controllers
 
         [HttpPost]
         [Route("flights/search")]
-
-        public IActionResult SearchFlights([FromBody] SearchFlightsRequest request)
+        public IActionResult SearchFlights(SearchFlightsRequest request)
         {
-            var matchingList = FlightStorage.AddSearchedFlight(request);
+            var matchingList = FlightStorage.GetAllFlights();
+            var page = new PageResult();
 
-            var page = new PageResult<Flight>()
+            if (request.From == null
+                || request.To == null
+                || request.DepartureDate == null
+                || request.To == request.From)
             {
-                Page = matchingList.Length,
-                TotalItems = matchingList.Length,
-                Items = matchingList
+                return BadRequest();
+            }
+            var uniqueItem = matchingList.Select(item =>
+                                           item.From.AirportCode == request.From &&
+                                           item.To.AirportCode == request.To &&
+                                           item.DepartureTime == request.DepartureDate).Distinct();
+
+            var items = matchingList.Where(item =>
+                                          item.From.AirportCode == request.From &&
+                                          item.To.AirportCode == request.To &&
+                                          item.DepartureTime == request.DepartureDate).Distinct();
+            page = new PageResult()
+            {
+                Page = 0,
+                TotalItems = uniqueItem.Count(),
+                Items = items.ToArray(),
             };
+
 
             if (request.To != null && request.From != null && !string.IsNullOrEmpty(request.DepartureDate))
             {
                 return Ok(page);
             }
 
-            if (request.To == null || request.From == null || string.IsNullOrEmpty(request.DepartureDate))
-            {
-                return BadRequest();
-            }
-
-            return Ok();
+            return NoContent();
         }
 
 

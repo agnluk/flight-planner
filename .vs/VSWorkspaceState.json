@@ -2,6 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\FlightPlanner",
+    "\\FlightPlanner.Data",
+    "\\FlightPlanner\\Controllers",
     "\\FlightPlanner\\Storage"
   ],
   "SelectedNode": "\\FlightPlanner.sln",
