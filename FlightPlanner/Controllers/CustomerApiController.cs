@@ -19,7 +19,6 @@ namespace FlightPlanner.Controllers
 
     public class CustomerApiController : BaseApiController
     {
-        private readonly object _locker = new object();
         public CustomerApiController(FlightPlannerDbContext context) : base(context) { }
 
         [HttpGet]
@@ -52,9 +51,9 @@ namespace FlightPlanner.Controllers
                 return NotFound();
             }
 
-
             return Ok(searchedList);
         }
+
         [HttpPost]
         [Route("flights/search")]
         public IActionResult SearchFlights(SearchFlightsRequest request)
@@ -94,7 +93,6 @@ namespace FlightPlanner.Controllers
                 return NoContent();
         }
         
-
         [HttpGet]
         [Route("flights/{id}")]
 
