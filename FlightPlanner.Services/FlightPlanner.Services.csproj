@@ -4,4 +4,9 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FlightPlanner.Core\FlightPlanner.Core.csproj" />
+    <ProjectReference Include="..\FlightPlanner.Data\FlightPlanner.Data.csproj" />
+  </ItemGroup>
+
 </Project>

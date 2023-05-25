@@ -1,9 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\FlightPlanner",
-    "\\FlightPlanner.Data"
+    "\\FlightPlanner.Core",
+    "\\FlightPlanner.Core\\Services"
   ],
-  "SelectedNode": "\\FlightPlanner.sln",
+  "SelectedNode": "\\FlightPlanner.Core\\Services\\IDbServices.cs",
   "PreviewInSolutionExplorer": false
 }
