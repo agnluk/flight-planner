@@ -1853,6 +1853,45 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XmlSerializer.dll": {}
         }
+      },
+      "FlightPlanner.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "compile": {
+          "bin/placeholder/FlightPlanner.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FlightPlanner.Core.dll": {}
+        }
+      },
+      "FlightPlanner.Data/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "FlightPlanner.Core": "1.0.0",
+          "Microsoft.EntityFrameworkCore": "5.0.17",
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.17"
+        },
+        "compile": {
+          "bin/placeholder/FlightPlanner.Data.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FlightPlanner.Data.dll": {}
+        }
+      },
+      "FlightPlanner.Services/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "FlightPlanner.Core": "1.0.0",
+          "FlightPlanner.Data": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/FlightPlanner.Services.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FlightPlanner.Services.dll": {}
+        }
       }
     }
   },
@@ -6216,10 +6255,28 @@
         "system.xml.xmlserializer.4.3.0.nupkg.sha512",
         "system.xml.xmlserializer.nuspec"
       ]
+    },
+    "FlightPlanner.Core/1.0.0": {
+      "type": "project",
+      "path": "../FlightPlanner.Core/FlightPlanner.Core.csproj",
+      "msbuildProject": "../FlightPlanner.Core/FlightPlanner.Core.csproj"
+    },
+    "FlightPlanner.Data/1.0.0": {
+      "type": "project",
+      "path": "../FlightPlanner.Data/FlightPlanner.Data.csproj",
+      "msbuildProject": "../FlightPlanner.Data/FlightPlanner.Data.csproj"
+    },
+    "FlightPlanner.Services/1.0.0": {
+      "type": "project",
+      "path": "../FlightPlanner.Services/FlightPlanner.Services.csproj",
+      "msbuildProject": "../FlightPlanner.Services/FlightPlanner.Services.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net5.0": [
+      "FlightPlanner.Core >= 1.0.0",
+      "FlightPlanner.Data >= 1.0.0",
+      "FlightPlanner.Services >= 1.0.0",
       "Microsoft.EntityFrameworkCore >= 5.0.17",
       "Microsoft.EntityFrameworkCore.Design >= 5.0.17",
       "Microsoft.EntityFrameworkCore.SqlServer >= 5.0.17",
@@ -6261,7 +6318,17 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Administrator.DESKTOP-QEAQSC9\\Source\\Repos\\flight-planner\\FlightPlanner.Core\\FlightPlanner.Core.csproj": {
+              "projectPath": "C:\\Users\\Administrator.DESKTOP-QEAQSC9\\Source\\Repos\\flight-planner\\FlightPlanner.Core\\FlightPlanner.Core.csproj"
+            },
+            "C:\\Users\\Administrator.DESKTOP-QEAQSC9\\Source\\Repos\\flight-planner\\FlightPlanner.Data\\FlightPlanner.Data.csproj": {
+              "projectPath": "C:\\Users\\Administrator.DESKTOP-QEAQSC9\\Source\\Repos\\flight-planner\\FlightPlanner.Data\\FlightPlanner.Data.csproj"
+            },
+            "C:\\Users\\Administrator.DESKTOP-QEAQSC9\\Source\\Repos\\flight-planner\\FlightPlanner.Services\\FlightPlanner.Services.csproj": {
+              "projectPath": "C:\\Users\\Administrator.DESKTOP-QEAQSC9\\Source\\Repos\\flight-planner\\FlightPlanner.Services\\FlightPlanner.Services.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

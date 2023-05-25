@@ -1,0 +1,17 @@
+C:\Users\Administrator.DESKTOP-QEAQSC9\Source\Repos\flight-planner\FlightPlanner.Services\bin\Debug\net5.0\FlightPlanner.Services.deps.json
+C:\Users\Administrator.DESKTOP-QEAQSC9\Source\Repos\flight-planner\FlightPlanner.Services\bin\Debug\net5.0\FlightPlanner.Services.dll
+C:\Users\Administrator.DESKTOP-QEAQSC9\Source\Repos\flight-planner\FlightPlanner.Services\bin\Debug\net5.0\FlightPlanner.Services.pdb
+C:\Users\Administrator.DESKTOP-QEAQSC9\Source\Repos\flight-planner\FlightPlanner.Services\bin\Debug\net5.0\FlightPlanner.Core.dll
+C:\Users\Administrator.DESKTOP-QEAQSC9\Source\Repos\flight-planner\FlightPlanner.Services\bin\Debug\net5.0\FlightPlanner.Data.dll
+C:\Users\Administrator.DESKTOP-QEAQSC9\Source\Repos\flight-planner\FlightPlanner.Services\bin\Debug\net5.0\FlightPlanner.Core.pdb
+C:\Users\Administrator.DESKTOP-QEAQSC9\Source\Repos\flight-planner\FlightPlanner.Services\bin\Debug\net5.0\FlightPlanner.Data.pdb
+C:\Users\Administrator.DESKTOP-QEAQSC9\Source\Repos\flight-planner\FlightPlanner.Services\obj\Debug\net5.0\FlightPlanner.Services.csproj.AssemblyReference.cache
+C:\Users\Administrator.DESKTOP-QEAQSC9\Source\Repos\flight-planner\FlightPlanner.Services\obj\Debug\net5.0\FlightPlanner.Services.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Administrator.DESKTOP-QEAQSC9\Source\Repos\flight-planner\FlightPlanner.Services\obj\Debug\net5.0\FlightPlanner.Services.AssemblyInfoInputs.cache
+C:\Users\Administrator.DESKTOP-QEAQSC9\Source\Repos\flight-planner\FlightPlanner.Services\obj\Debug\net5.0\FlightPlanner.Services.AssemblyInfo.cs
+C:\Users\Administrator.DESKTOP-QEAQSC9\Source\Repos\flight-planner\FlightPlanner.Services\obj\Debug\net5.0\FlightPlanner.Services.csproj.CoreCompileInputs.cache
+C:\Users\Administrator.DESKTOP-QEAQSC9\Source\Repos\flight-planner\FlightPlanner.Services\obj\Debug\net5.0\FlightPlanner.Services.csproj.CopyComplete
+C:\Users\Administrator.DESKTOP-QEAQSC9\Source\Repos\flight-planner\FlightPlanner.Services\obj\Debug\net5.0\FlightPlanner.Services.dll
+C:\Users\Administrator.DESKTOP-QEAQSC9\Source\Repos\flight-planner\FlightPlanner.Services\obj\Debug\net5.0\refint\FlightPlanner.Services.dll
+C:\Users\Administrator.DESKTOP-QEAQSC9\Source\Repos\flight-planner\FlightPlanner.Services\obj\Debug\net5.0\FlightPlanner.Services.pdb
+C:\Users\Administrator.DESKTOP-QEAQSC9\Source\Repos\flight-planner\FlightPlanner.Services\obj\Debug\net5.0\ref\FlightPlanner.Services.dll

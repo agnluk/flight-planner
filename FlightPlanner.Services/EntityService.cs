@@ -31,6 +31,9 @@ namespace FlightPlanner.Services
         {
             Update<T>(entity);
         }
-
+        public T GetById(int id) 
+        {
+            return GetById<T>(id);
+        }
     }
 }
