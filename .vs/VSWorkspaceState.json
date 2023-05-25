@@ -1,9 +1,7 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\FlightPlanner",
-    "\\FlightPlanner\\Controllers",
-    "\\FlightPlanner\\Storage"
+    ""
   ],
+  "SelectedNode": "\\FlightPlanner.sln",
   "PreviewInSolutionExplorer": false
 }
